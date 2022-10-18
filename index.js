@@ -14,10 +14,9 @@ client.commands = new Collection();
 client.once("ready", () => {
 	console.log("Ready!");
 });
-client.on('debug', (...args) => console.log('debug', ...args));
-client.on('error', (...args) => console.error('error', ...args));
-client.on('warning', (...args) => console.warn('warning', ...args));
-client.on('rateLimit', (...args) => console.log('rateLimit', ...args));
+client.on("error", (e) => {
+	console.error("Error!", e);
+});
 
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
