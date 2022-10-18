@@ -2,12 +2,13 @@ const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("best-run")
-		.setDescription("Best MM+ for the week !")
+		.setName("setWoWGuild")
+		.setDescription("Configuration du bot")
 		.addStringOption(option =>
-			option.setName("player")
-				.setDescription("Nom du joueur")
+			option.setName("realm")
+				.setDescription("Royaume")
 				.setRequired(true)),
+  
 	async execute(interaction) {
 		await interaction.reply("Pong!");
 	},
