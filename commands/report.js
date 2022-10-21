@@ -33,7 +33,7 @@ module.exports = {
           .filter(member => member.rank <= 3)
           .forEach(member => {
             const name = member.character.name;
-            const requestMember = request(`${raiderIO}characters/profile?region=eu&realm=${realmName}&name=${name}&fields=mythic_plus_highest_level_runs`);
+            const requestMember = request(`${raiderIO}characters/profile?region=eu&realm=${realmName}&name=${name}&fields=mythic_plus_weekly_highest_level_runs`);
            
             memberSearchList.push(
               requestMember
@@ -52,7 +52,7 @@ module.exports = {
           .setTimestamp();
         
         recapList.forEach(raiderProfile => {
-          const runs = raiderProfile.mythic_plus_highest_level_runs;
+          const runs = raiderProfile.mythic_plus_weekly_highest_level_runs;
 
           recapEmbed.addFields({
             name: raiderProfile.name,

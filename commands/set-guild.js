@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { request } = require('undici');
 const { getJSONResponse } = require("../utils/http.js");
 const { raiderIO } = require('../config/api.json');
@@ -16,9 +16,15 @@ module.exports = {
     .addStringOption(option =>
 			option.setName("guild")
 				.setDescription("Guilde")
-				.setRequired(true)),  
+				.setRequired(true))
+    .setDMPermission(false)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+  ,  
 	async execute(interaction) {
-    await interaction.deferReply();
+    await interaction.deferReply({
+      ephemeral: true
+    });
+    
     const realm = interaction.options.getString("realm");
     const wowGuild = interaction.options.getString("guild");
     const response = await request(`${raiderIO}guilds/profile?region=eu&realm=${realm}&name=${wowGuild}`);
@@ -31,8 +37,6 @@ module.exports = {
 
       await clientDb.set(`${interaction.guildId}_wow_guild_name`, guildFound.name);
       await clientDb.set(`${interaction.guildId}_wow_guild_realm`, guildFound.realm);
-
-      console.log(await clientDb.list());
       
       await interaction.editReply("Saved - " + guildFound.name + " !");
     } else {

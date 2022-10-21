@@ -7,8 +7,8 @@ const ClientDb = require("@replit/database");
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("best")
-		.setDescription("Top MM+ run !"),
+		.setName("best-weekly")
+		.setDescription("Top MM+ run of the week !"),
 	async execute(interaction) {
 		await interaction.deferReply();
     const clientDb = new ClientDb();    
@@ -30,7 +30,7 @@ module.exports = {
           .filter(member => member.rank <= 3)
           .forEach(member => {
             const name = member.character.name;
-            const requestMember = request(`${raiderIO}characters/profile?region=eu&realm=${realmName}&name=${name}&fields=mythic_plus_highest_level_runs`);
+            const requestMember = request(`${raiderIO}characters/profile?region=eu&realm=${realmName}&name=${name}&fields=mythic_plus_weekly_highest_level_runs`);
            
             memberSearchList.push(
               requestMember
@@ -43,11 +43,11 @@ module.exports = {
 
         const bestPlayer = findBestPlayer(recapList);
         if(bestPlayer) {
-          const bestDungeon = bestPlayer.mythic_plus_highest_level_runs[0];
+          const bestDungeon = bestPlayer.mythic_plus_weekly_highest_level_runs[0];
           
         const topEmbed = new EmbedBuilder()
 	        .setColor(0x0099FF)
-        	.setTitle(`${bestPlayer.name} est trop fort!`)
+        	.setTitle(`${bestPlayer.name} est trop fort (cette semaine)!`)
           .setThumbnail(bestPlayer.thumbnail_url)
           .addFields({
             name: "Meilleur donjon",
@@ -70,9 +70,9 @@ function findBestPlayer(recapList) {
   let bestRun = null;
   let bestPlayer = null;
   recapList.forEach(recap => {
-    if(recap.mythic_plus_highest_level_runs && recap.mythic_plus_highest_level_runs.length > 0) {
+    if(recap.mythic_plus_weekly_highest_level_runs && recap.mythic_plus_weekly_highest_level_runs.length > 0) {
       // TODO improve
-      const currentBest = recap.mythic_plus_highest_level_runs[0];
+      const currentBest = recap.mythic_plus_weekly_highest_level_runs[0];
       if(!bestRun) {
         bestRun = currentBest;
         bestPlayer = recap;

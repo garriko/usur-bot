@@ -1,3 +1,5 @@
+#entrypoint = "deploy-command.js"
+#entrypoint = "deploy-prod.js"
 entrypoint = "index.js"
 
 hidden = [".config"]
